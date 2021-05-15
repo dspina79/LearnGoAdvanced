@@ -8,7 +8,6 @@ import (
 func encrypt(s string) []byte {
 	hasher := sha1.New()
 	hasher.Write([]byte(s))
-
 	octVal := hasher.Sum(nil)
 	return octVal
 }
