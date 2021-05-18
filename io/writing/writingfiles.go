@@ -12,6 +12,17 @@ func check(err error) {
 	}
 }
 
+func writeDataToFile(data string, filePath string) (int, error) {
+
+	f, err := os.Create(filePath)
+	check(err)
+
+	defer f.Close()
+	resultInt, err := f.WriteString(data)
+	f.Sync()
+	return resultInt, err
+}
+
 func main() {
 	fn := "/newfile.txt"
 	wd, err := os.Getwd()
@@ -29,9 +40,12 @@ func main() {
 
 	content2 := []byte("What a piece of work is a man\nhow noble in reason\n")
 	data2, err := f.Write(content2)
-	fmt.Printf("The file was written with %d bytes", data2)
+	fmt.Printf("The file was written with %d bytes\n", data2)
 
 	data3, err := f.WriteString("this should appear as a third line\n")
-	fmt.Printf("Write another %d bytes", data3)
+	fmt.Printf("Wrote another %d bytes\n", data3)
 
+	// submit the information
+	f.Sync()
+	writeDataToFile("this is example text", wd+"/myfile.txt")
 }
