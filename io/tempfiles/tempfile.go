@@ -33,4 +33,6 @@ func main() {
 	fname := filepath.Join(tempDir, "exampleFile2")
 	err = ioutil.WriteFile(fname, []byte{1, 2}, 0666)
 	check(err)
+	err = ioutil.WriteFile(fname, []byte("this is yet another string"), 0666)
+	check(err)
 }
