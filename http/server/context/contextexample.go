@@ -6,6 +6,14 @@ import (
 	"time"
 )
 
+func checkContextEnd(httpWriter http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+	err := ctx.Err()
+	fmt.Println("server", err)
+	internalError := http.StatusInternalServerError
+	http.Error(httpWriter, err.Error(), internalError)
+}
+
 func hello(httpWriter http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	fmt.Println("Starging /hello call")
@@ -15,10 +23,7 @@ func hello(httpWriter http.ResponseWriter, req *http.Request) {
 	case <-time.After(10 * time.Second):
 		fmt.Fprintf(httpWriter, "Hello, world!")
 	case <-ctx.Done():
-		err := ctx.Err()
-		fmt.Println("server", err)
-		internalError := http.StatusInternalServerError
-		http.Error(httpWriter, err.Error(), internalError)
+		checkContextEnd(httpWriter, req)
 	}
 }
 
