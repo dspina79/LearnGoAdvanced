@@ -21,7 +21,10 @@ func hello(httpWriter http.ResponseWriter, req *http.Request) {
 
 	select {
 	case <-time.After(10 * time.Second):
-		fmt.Fprintf(httpWriter, "Hello, world!")
+		fmt.Fprintf(httpWriter, "Hello, world!\n")
+	case <-time.After(20 * time.Second):
+		// this wont fire because of the line above it
+		fmt.Fprintf(httpWriter, "Hello again...")
 	case <-ctx.Done():
 		checkContextEnd(httpWriter, req)
 	}
